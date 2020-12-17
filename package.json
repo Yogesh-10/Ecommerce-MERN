@@ -1,0 +1,14 @@
+{
+  "name": "ecommerce-mern-stack",
+  "version": "1.0.0",
+  "description": "MERN ecommerce",
+  "main": "sever.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

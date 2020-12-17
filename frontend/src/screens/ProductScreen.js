@@ -1,15 +1,25 @@
-import React from "react";
-import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Rating from "../components/Rating";
-import products from "../products";
+import React, { useEffect, useState } from 'react';
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import Rating from '../components/Rating';
+import axios from 'axios';
 
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id);
+  const [product, setProduct] = useState({});
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${match.params.id}`);
+
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, []);
 
   return (
     <>
-      <Link className="btn btn-light my-3" to="/">
+      <Link className='btn btn-light my-3' to='/'>
         Go back
       </Link>
       <Row>
@@ -17,7 +27,7 @@ const ProductScreen = ({ match }) => {
           <Image src={product.image} alt={product.name} fluid></Image>
         </Col>
         <Col md={3}>
-          <ListGroup variant="flush">
+          <ListGroup variant='flush'>
             <ListGroup.Item>
               <h3>{product.name}</h3>
             </ListGroup.Item>
@@ -36,7 +46,7 @@ const ProductScreen = ({ match }) => {
         </Col>
         <Col md={3}>
           <Card>
-            <ListGroup variant="flush">
+            <ListGroup variant='flush'>
               <ListGroup.Item>
                 <Row>
                   <Col>Price:</Col>
@@ -50,15 +60,15 @@ const ProductScreen = ({ match }) => {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    {product.countInStock > 0 ? "In stock" : "Out of Stock"}
+                    {product.countInStock > 0 ? 'In stock' : 'Out of Stock'}
                   </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Button
-                  className="btn-clock"
-                  type="button"
+                  className='btn-clock'
+                  type='button'
                   disabled={product.countInStock === 0}
                 >
                   Add to Cart

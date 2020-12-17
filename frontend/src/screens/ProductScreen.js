@@ -15,7 +15,18 @@ const ProductScreen = ({ match }) => {
     };
 
     fetchProduct();
-  }, []);
+  }, [match]);
+
+  //*** WE CAN ALSO USE THE BELOW FETCH METHOD INSTEAD OF AXIOS.BOTH WORKS SAME ***
+
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     const res = await fetch(`/api/products/${match.params.id}`);
+  //     const data = await res.json();
+  //     setProduct(data);
+  //   };
+  //   fetchProduct();
+  // }, []);
 
   return (
     <>

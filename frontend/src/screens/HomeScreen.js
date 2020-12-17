@@ -8,7 +8,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await axios.get('/api/products');
+      const { data } = await axios.get('/api/products'); // destructure data directly instead of res.data
 
       setProducts(data);
     };

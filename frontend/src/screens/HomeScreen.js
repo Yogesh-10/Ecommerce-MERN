@@ -15,6 +15,17 @@ const HomeScreen = () => {
     fetchProducts();
   }, []);
 
+  //*** WE CAN ALSO USE THE BELOW FETCH METHOD INSTEAD OF AXIOS.BOTH WORKS SAME***
+
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     const res = await fetch('/api/products');
+  //     const data = await res.json();
+  //     setProducts(data);
+  //   };
+  //   fetchProducts();
+  // }, []);
+
   return (
     <>
       <h1>Latest Products</h1>

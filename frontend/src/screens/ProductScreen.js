@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  Image,
-  ListGroup,
-  Row,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Rating from '../components/Rating';
-import { listProductDetails } from '../actions/productActions';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Card, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Rating from '../components/Rating'
+import { listProductDetails } from '../actions/productActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 const ProductScreen = ({ history, match }) => {
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(1)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const productDetails = useSelector((state) => state.productDetails);
+  const productDetails = useSelector((state) => state.productDetails)
 
-  const { loading, error, product } = productDetails;
+  const { loading, error, product } = productDetails
 
   useEffect(() => {
-    dispatch(listProductDetails(match.params.id));
-  }, [match, dispatch]);
+    dispatch(listProductDetails(match.params.id))
+  }, [match, dispatch])
 
   //  ***** the below method was used before setting up redux, now the above method is fired off from actions in redux ****//
 
@@ -53,8 +45,8 @@ const ProductScreen = ({ history, match }) => {
   // }, []);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}/qty=${qty}`);
-  };
+    history.push(`/cart/${match.params.id}?qty=${qty}`)
+  }
 
   return (
     <>
@@ -148,7 +140,7 @@ const ProductScreen = ({ history, match }) => {
         </Row>
       )}
     </>
-  );
-};
+  )
+}
 
-export default ProductScreen;
+export default ProductScreen

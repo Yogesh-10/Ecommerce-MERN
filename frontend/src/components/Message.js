@@ -1,17 +1,17 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 
-const Message = ({ variant, error }) => {
-  return <Alert variant={variant}>{error}</Alert>;
+const Message = ({ variant, children }) => {
+  return <Alert variant={variant}>{children}</Alert>;
 };
 
 Message.defaultProps = {
   variant: 'info',
 };
 
-// ****** the above also can be writen as children prop which display error from home screen ****//
-// const Message = ({ variant,children  }) => {
-//   return <Alert variant={variant}>{children}</Alert>;
+// ****** the above code  also can be writen as error prop that is passed from home screen to message which display error from home screen ****//
+// const Message = ({ variant, error }) => {
+//   return <Alert variant={variant}>{error}</Alert>;
 // };
 
 export default Message;

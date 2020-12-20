@@ -27,11 +27,16 @@ const userSchema = mongoose.Schema(
   }
 )
 
+// matching with passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
+// pre method from mongoose means before...so pre.save is before saving
+
+// hashing before saving to DB
 userSchema.pre('save', async function (next) {
+  // isModified method is from mongoose
   if (!this.isModified('password')) {
     next()
   }

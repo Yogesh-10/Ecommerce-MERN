@@ -15,7 +15,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
       req.user = await User.findById(decoded.id).select('-password') // -password (prounounced as minus password) removes password from token
-      // the above req.user can be used in any protected route we want
+      // the above req.user is now used in  all of the protected route
 
       next()
     } catch (error) {

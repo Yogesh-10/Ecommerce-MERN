@@ -18,7 +18,7 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
-  }, [match, dispatch])
+  }, [dispatch, match])
 
   //  ***** the below method was used before setting up redux, now the above method is fired off from actions in redux ****//
 

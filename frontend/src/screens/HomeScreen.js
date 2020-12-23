@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row } from 'react-bootstrap';
-import Product from '../components/Product';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import { listProducts } from '../actions/productActions';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Col, Row } from 'react-bootstrap'
+import Product from '../components/Product'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { listProducts } from '../actions/productActions'
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const productList = useSelector((state) => state.productList);
+  const productList = useSelector((state) => state.productList)
 
-  const { loading, error, products } = productList;
+  const { loading, error, products } = productList
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts())
+  }, [dispatch])
 
   //  ***** the below method was used before setting up redux, now the above method is fired off from actions in redux ****//
 
@@ -59,7 +59,7 @@ const HomeScreen = () => {
         </Row>
       )}
     </>
-  );
-};
+  )
+}
 
-export default HomeScreen;
+export default HomeScreen

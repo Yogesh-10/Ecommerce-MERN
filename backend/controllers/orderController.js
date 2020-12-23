@@ -43,7 +43,6 @@ const getOrderById = asyncHandler(async (req, res) => {
     'name email'
   )
   if (order) {
-    res.status(200)
     res.json(order)
   } else {
     res.status(404)
@@ -52,16 +51,15 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 // @desc update order to paid
-// @route GET/api/orders/:id/pay
+// @route PUT/api/orders/:id/pay
 // @access  private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
-    res.status(200)
     order.isPaid = true
     order.paidAt = Date.now()
-    // the below value comes from paypal api
+    // the below paymentReslt and value comes from paypal api
     order.paymentResult = {
       id: req.body.id,
       status: req.body.status,
@@ -78,4 +76,13 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 })
 
-export { addOrderItems, getOrderById, updateOrderToPaid }
+// @desc get logged in user orders
+// @route GET/api/orders/myorders
+// @access  private
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id }) //getting only logged in user orders
+
+  res.json(orders)
+})
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders }

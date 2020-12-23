@@ -6,6 +6,12 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_MY_FAIL,
+  ORDER_LIST_MY_REQUEST,
+  ORDER_LIST_MY_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS,
 } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -73,6 +79,85 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         : error.message
     dispatch({
       type: ORDER_DETAILS_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const payOrder = (orderID, paymentResult) => async (
+  dispatch,
+  getState
+) => {
+  // orderID comes from the database (order we created) and paymentResult from paypal api ..(we can name anything in the parameters we want)
+  // order is whole object, where as objectID is only the id from the whole order object
+  try {
+    dispatch({
+      type: ORDER_PAY_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/orders/${orderID}/pay`,
+      paymentResult,
+      config
+    ) // api/orders/:id.. in which the id is which that is passed in the paramter above
+
+    dispatch({
+      type: ORDER_PAY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: ORDER_PAY_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const listMyOrders = () => async (dispatch, getState) => {
+  // no need to pass anything in paramter bcoz it knows who we are by tokens
+  try {
+    dispatch({
+      type: ORDER_LIST_MY_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/orders/myorders`, config)
+
+    dispatch({
+      type: ORDER_LIST_MY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: ORDER_LIST_MY_FAIL,
       payload: message,
     })
   }

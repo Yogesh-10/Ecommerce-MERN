@@ -93,9 +93,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('Product Not Found')
   }
-
-  const createProduct = await product.save()
-  res.status(201).json(createProduct)
 })
 
 export {

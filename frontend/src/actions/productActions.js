@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAILURE,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAILURE,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -47,6 +50,40 @@ export const listProductDetails = (id) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+    })
+  }
+}
+
+export const deleteProduct = (id) => async (dispatch, getState) => {
+  // no need to pass anything in paramter bcoz it knows who we are by tokens
+  try {
+    dispatch({
+      type: PRODUCT_DELETE_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.delete(`/api/products/${id}`, config)
+
+    dispatch({
+      type: PRODUCT_DELETE_SUCCESS,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: PRODUCT_DELETE_FAILURE,
+      payload: message,
     })
   }
 }

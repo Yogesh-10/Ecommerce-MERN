@@ -9,6 +9,9 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAILURE,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_FAILURE,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -83,6 +86,40 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         : error.message
     dispatch({
       type: PRODUCT_DELETE_FAILURE,
+      payload: message,
+    })
+  }
+}
+
+export const createProduct = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post(`/api/products/`, {}, config) // second argument is empty object because we are making post request and no sending data here
+
+    dispatch({
+      type: PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: PRODUCT_CREATE_FAILURE,
       payload: message,
     })
   }

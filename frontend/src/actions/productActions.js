@@ -20,12 +20,12 @@ import {
   PRODUCT_CREATE_REVIEW_REQUEST,
 } from '../constants/productConstants'
 
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = '') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
     // data is the whole object sent to the route and destructed here to fetch and use on our frontend
-    const { data } = await axios.get('/api/products')
+    const { data } = await axios.get(`/api/products?keyword=${keyword}`)
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

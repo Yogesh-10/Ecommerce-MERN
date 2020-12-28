@@ -5,7 +5,17 @@ import Product from '../models/productModel.js'
 // @route GET/api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  //query is the thing after ques mark in url
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword, //$regex comes from mongodb
+          $options: 'i', //case insensitive
+        },
+      }
+    : {}
+
+  const products = await Product.find({ ...keyword }) //it is empty object{} by default default and if it is matching the keyword it searches for it
   res.json(products)
 })
 

@@ -5,6 +5,9 @@ import Product from '../models/productModel.js'
 // @route GET/api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 10
+  const page = Number(req.query.pageNumber) || 1 //req.query.pageNumber is getting query from url i.e, ?pageNumber=1 , if query is there this will be set or else 1 will be set.
+
   //query is the thing after ques mark in url
   const keyword = req.query.keyword
     ? {
@@ -14,9 +17,12 @@ const getProducts = asyncHandler(async (req, res) => {
         },
       }
     : {}
-
-  const products = await Product.find({ ...keyword }) //it is empty object{} by default default and if it is matching the keyword it searches for it
-  res.json(products)
+  const count = await Product.countDocuments({ ...keyword })
+  //in below code it is empty object{} by default default and if it is matching the keyword it searches for it
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1)) // limit limits the page size, i.e if the pageSize is 2 we get only 2 products , now the problem here is which 2 products we are going to get, so we use skip
+  res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc Fetch single product

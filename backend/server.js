@@ -23,10 +23,6 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('API is running..')
-})
-
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
@@ -39,6 +35,21 @@ app.get('/api/config/paypal', (req, res) => {
 
 const __dirname = path.resolve() //in es modules dirname will not work. so we mimic with resolve to work as same in es modules
 app.use('/uploads', express.static(path.join(__dirname, '/uploads'))) //taking the uploads folder and making it static. we use static to server files, images
+
+// before deployment
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+  app.get(
+    '*',
+    (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')) //* means any of the routes that not appear is going to point to index.html in static folder
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running..')
+  })
+}
 
 app.use(notFound)
 

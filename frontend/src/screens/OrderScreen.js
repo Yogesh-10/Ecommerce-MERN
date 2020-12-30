@@ -84,12 +84,13 @@ const OrderScreen = ({ match, history }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
       <Row>
         {/* everything below is fetched from the database and displayed */}
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
+              <h5>Order {order._id}</h5>
+
               <h2>Shipping</h2>
               <p>
                 <strong>Name:</strong>
